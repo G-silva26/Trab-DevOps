@@ -4,7 +4,6 @@ on:
     branches:
       - main
 
-
 jobs:
   deliver:
     runs-on: ubuntu-latest
@@ -13,10 +12,9 @@ jobs:
         uses: actions/checkout@v4
       
       - name: Simulação CD
-      - uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4
         with:
           name: prévias.zip
           path: |
             '**.py'
-            README.md 
-            
+            README.md
