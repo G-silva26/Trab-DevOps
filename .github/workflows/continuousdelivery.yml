@@ -23,7 +23,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: deliver
     steps:
-      - name: Baixar artefatos
+      - name: Baixar Arquivos
         uses: actions/download-artifact@v5
         with:
           name: prévias.zip
