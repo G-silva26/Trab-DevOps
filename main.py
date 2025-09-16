@@ -9,4 +9,4 @@ async def root():
 
 @app.get("/teste")
 async def functest():
-    return {"message": "Deu certo 👍🏼."}
+    return {"message": "DEU CERTO 👍🏻."}
