@@ -1,4 +1,5 @@
 name: Continous Delivery
+
 on:
   push:
     branches:
@@ -10,7 +11,7 @@ jobs:
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
-      
+        
       - name: Simulação CD
         uses: actions/upload-artifact@v4
         with:
@@ -18,3 +19,15 @@ jobs:
           path: |
             '**.py'
             README.md
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: deliver
+    steps:
+      - name: Baixar Arquivos
+        uses: actions/download-artifact@v5
+        with:
+          name: prévias.zip
+
+      - name: Display structure of downloaded files
+        run: ls -R
