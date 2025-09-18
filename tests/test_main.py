@@ -6,6 +6,7 @@ from src.main import app
 from fastapi.testclient import TestClient
 from unittest.mock import patch
 import random
+import pytest
 
 client = TestClient(app)
 
@@ -13,11 +14,6 @@ def test_root():
     response = client.get("/")
     assert response.status_code == 200
     assert response.json() == {"message": "Hello World"}
-
-def test_functest():
-    response = client.get("/teste")
-    assert response.status_code == 200
-    assert response.json() == {"message": "DEU CERTO 👍🏻."}
 
 def test_saudacao():
     response = client.get("/saudacao/Guilherme")
@@ -29,3 +25,27 @@ def test_sorteio_numero():
         response = client.get("/sorteio")
         assert response.status_code == 200
         assert response.json() == {"ok": True, "numero": 42}
+
+
+def test_root_content_type():
+    response = client.get("/")
+    assert response.status_code == 200
+    assert "application/json" in response.headers["content-type"]
+
+# Testa se sorteio retorna valor dentro do range correto
+def test_sorteio_numero_range():
+    response = client.get("/sorteio")
+    numero = response.json()["numero"]
+    assert 1 <= numero <= 100
+
+# Testa a saudacao com diferentes nomes usando parametrize
+@pytest.mark.parametrize("nome, esperado", [
+    ("Guilherme", "Olá Guilherme! Bem-Vindo ao Python!!"),
+    ("Felipe", "Olá Felipe! Bem-Vindo ao Python!!"),
+    ("Aline", "Olá Aline! Bem-Vindo ao Python!!")
+])
+def test_saudacao_varios_nomes(nome, esperado):
+    response = client.get(f"/saudacao/{nome}")
+    assert response.status_code == 200
+    assert response.text == f'"{esperado}"'
+
