@@ -1,8 +1,6 @@
 jobs:
   test:
     runs-on: ubuntu-latest
-    env:
-      PYTHONPATH: ${{ github.workspace }}
     steps:
       - name: Check out repository code
         uses: actions/checkout@v4
@@ -19,4 +17,4 @@ jobs:
           pip install pytest httpx
 
       - name: Run tests
-        run: pytest -v tests/
+        run: PYTHONPATH=$PYTHONPATH:$(pwd) pytest -v tests/
