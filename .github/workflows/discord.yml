@@ -1,19 +1,21 @@
 name: Discord Notifications
 
 on:
-  workflow_run:
-    workflows: ["Continuous Integration", "Continuous Delivery"]
-    types:
-      - completed
+  push:  
+    branches:
+      - main
 
 jobs:
   discord:
     runs-on: ubuntu-latest
     steps:
+      - uses: actions/checkout@v4
+
       - name: Send Discord Notification
         uses: sniddl/discord-commits@v1.6
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
           template: "avatar-with-link"
           include-extras: true
-          status: ${{ github.event.workflow_run.conclusion }}
+          status: ${{ job.status }}  
+          message: "Commit em **${{ github.repository }}** por **${{ github.actor }}** terminou com status **${{ job.status }}**"
