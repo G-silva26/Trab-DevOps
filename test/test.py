@@ -1,16 +1,26 @@
-from src.main import *
+from fastapi.testclient import TestClient
+from src.main import app
 from unittest.mock import patch
 
+client = TestClient(app)
+
 def test_root():
-    assert root() == {"message": "Hello World"}
+    response = client.get("/")
+    assert response.status_code == 200
+    assert response.json() == {"message": "Hello World"}
 
 def test_functest():
-    assert functest() == {"message": "DEU CERTO 👍🏻."}
+    response = client.get("/teste")
+    assert response.status_code == 200
+    assert response.json() == {"message": "DEU CERTO 👍🏻."}
 
 def test_saudacao():
-    assert saudacao("Guilherme") == "Olá Guilherme! Bem-Vindo ao Python!!"
+    response = client.get("/saudacao/Guilherme")
+    assert response.status_code == 200
+    assert response.text == '"Olá Guilherme! Bem-Vindo ao Python!!"'
 
 def test_sorteio_numero():
     with patch("random.randint", return_value=42):
-        resultado = sorteio_numero()
-        assert resultado == {"ok": True, "numero": 42}
+        response = client.get("/sorteio")
+        assert response.status_code == 200
+        assert response.json() == {"ok": True, "numero": 42}

@@ -1,8 +1,19 @@
+name: Discord Notifications
+
+on:
+  workflow_run:
+    workflows: ["Continuous Integration", "Continuous Delivery"]
+    types:
+      - completed
+
+jobs:
   discord:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
-      - name: Run Discord Webhook
-        uses: Sniddl/discord-commits@v1.6
+      - name: Send Discord Notification
+        uses: sniddl/discord-commits@v1.6
         with:
           webhook: ${{ secrets.DISCORD_WEBHOOK }}
+          template: "avatar-with-link"
+          include-extras: true
+          status: ${{ github.event.workflow_run.conclusion }}
