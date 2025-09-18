@@ -23,3 +23,4 @@ def saudacao(nome):
 def sorteio_numero():
     numero = random.randint(1, 100)
     return {"ok": True, "numero": numero}
+

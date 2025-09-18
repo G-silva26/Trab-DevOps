@@ -1,4 +1,4 @@
-from src.app import *
+from src.main import *
 from unittest.mock import patch
 
 def test_root():
@@ -10,8 +10,7 @@ def test_functest():
 def test_saudacao():
     assert saudacao("Guilherme") == "Olá Guilherme! Bem-Vindo ao Python!!"
 
-def test_numero_aleatorio():
-    with patch("random.randint", return_value=777):
-        from random import randint
-        numero = randint(1, 1000)
-        assert numero == 777
+def test_sorteio_numero():
+    with patch("random.randint", return_value=42):
+        resultado = sorteio_numero()
+        assert resultado == {"ok": True, "numero": 42}
