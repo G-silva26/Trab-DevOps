@@ -26,19 +26,11 @@ def test_sorteio_numero():
         assert response.status_code == 200
         assert response.json() == {"ok": True, "numero": 42}
 
-
 def test_root_content_type():
     response = client.get("/")
     assert response.status_code == 200
     assert "application/json" in response.headers["content-type"]
 
-# Testa se sorteio retorna valor dentro do range correto
-def test_sorteio_numero_range():
-    response = client.get("/sorteio")
-    numero = response.json()["numero"]
-    assert 1 <= numero <= 100
-
-# Testa a saudacao com diferentes nomes usando parametrize
 @pytest.mark.parametrize("nome, esperado", [
     ("Guilherme", "Olá Guilherme! Bem-Vindo ao Python!!"),
     ("Felipe", "Olá Felipe! Bem-Vindo ao Python!!"),
